@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finance Calculator Hub</title>
+    <!-- Tailwind CSS from CDN for modern styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+        }
+        .container-content {
+            display: none;
+        }
+        .container-content.active {
+            display: block;
+        }
+        input[type="number"], select {
+            -moz-appearance: textfield;
+        }
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <!-- Header and Navigation -->
+    <header class="bg-indigo-600 shadow-lg text-white">
+        <nav class="container mx-auto flex items-center justify-between p-4 flex-wrap">
+            <h1 class="text-2xl font-bold">Finance Hub</h1>
+            <div class="block lg:hidden">
+                <button id="menu-toggle" class="flex items-center px-3 py-2 border rounded text-indigo-200 border-indigo-400 hover:text-white hover:border-white">
+                    <svg class="fill-current h-3 w-3" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>Menu</title><path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"/></svg>
+                </button>
+            </div>
+            <div id="nav-links" class="w-full lg:flex lg:items-center lg:w-auto hidden">
+                <div class="text-sm lg:flex-grow">
+                    <a href="#" data-target="home-content" class="container-link block mt-4 lg:inline-block lg:mt-0 text-indigo-200 hover:text-white mr-4 transition duration-300">
+                        Home
+                    </a>
+                    <a href="#" data-target="about-content" class="container-link block mt-4 lg:inline-block lg:mt-0 text-indigo-200 hover:text-white mr-4 transition duration-300">
+                        About Us
+                    </a>
+                    <a href="#" data-target="contact-content" class="container-link block mt-4 lg:inline-block lg:mt-0 text-indigo-200 hover:text-white mr-4 transition duration-300">
+                        Contact Us
+                    </a>
+                    <a href="#" data-target="disclaimer-content" class="container-link block mt-4 lg:inline-block lg:mt-0 text-indigo-200 hover:text-white transition duration-300">
+                        Disclaimer
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto p-6">
+
+        <!-- Main content area for calculators and pages -->
+        <div id="home-content" class="container-content active">
+            <h2 class="text-3xl font-bold text-center text-gray-800 mb-8">Financial Calculators</h2>
+
+            <!-- Calculator Selector -->
+            <div class="flex flex-wrap justify-center gap-4 mb-8">
+                <button data-calc="loan" class="calculator-btn bg-white text-indigo-600 font-semibold py-2 px-6 rounded-full shadow-md hover:bg-indigo-600 hover:text-white transition-colors duration-300">Loan</button>
+                <button data-calc="compound" class="calculator-btn bg-white text-indigo-600 font-semibold py-2 px-6 rounded-full shadow-md hover:bg-indigo-600 hover:text-white transition-colors duration-300">Compound Interest</button>
+                <button data-calc="savings" class="calculator-btn bg-white text-indigo-600 font-semibold py-2 px-6 rounded-full shadow-md hover:bg-indigo-600 hover:text-white transition-colors duration-300">Savings Goal</button>
+            </div>
+
+            <!-- Loan Calculator -->
+            <div id="loan-calc" class="calculator-container bg-white p-6 md:p-8 rounded-2xl shadow-xl border-t-4 border-indigo-600 max-w-2xl mx-auto">
+                <h3 class="text-2xl font-bold mb-6 text-gray-700">Loan Calculator</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="flex flex-col">
+                        <label for="loan-amount" class="text-gray-600 font-medium mb-1">Loan Amount ($)</label>
+                        <input type="number" id="loan-amount" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 p-2.5 transition duration-300" placeholder="e.g., 50000" min="0">
+                    </div>
+                    <div class="flex flex-col">
+                        <label for="loan-interest" class="text-gray-600 font-medium mb-1">Interest Rate (%)</label>
+                        <input type="number" id="loan-interest" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 p-2.5 transition duration-300" placeholder="e.g., 5" min="0" step="0.1">
+                    </div>
+                    <div class="flex flex-col">
+                        <label for="loan-term" class="text-gray-600 font-medium mb-1">Loan Term (Years)</label>
+                        <input type="number" id="loan-term" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 p-2.5 transition duration-300" placeholder="e.g., 30" min="1">
+                    </div>
+                </div>
+                <button id="calculate-loan" class="mt-8 w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-4 rounded-lg shadow-md transition duration-300">
+                    Calculate
+                </button>
+                <div id="loan-result" class="mt-6 p-4 bg-indigo-50 text-indigo-800 rounded-lg shadow-inner">
+                    <p class="font-semibold text-lg">Monthly Payment: <span id="monthly-payment" class="font-bold">0</span></p>
+                    <p>Total Interest Paid: <span id="total-interest">0</span></p>
+                    <p>Total Repayment: <span id="total-repayment">0</span></p>
+                </div>
+            </div>
+
+            <!-- Compound Interest Calculator -->
+            <div id="compound-calc" class="calculator-container bg-white p-6 md:p-8 rounded-2xl shadow-xl border-t-4 border-indigo-600 max-w-2xl mx-auto hidden">
+                <h3 class="text-2xl font-bold mb-6 text-gray-700">Compound Interest Calculator</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="flex flex-col">
+                        <label for="compound-principal" class="text-gray-600 font-medium mb-1">Initial Investment ($)</label>
+                        <input type="number" id="compound-principal" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 p-2.5" placeholder="e.g., 10000" min="0">
+                    </div>
+                    <div class="flex flex-col">
+                        <label for="compound-rate" class="text-gray-600 font-medium mb-1">Annual Interest Rate (%)</label>
+                        <input type="number" id="compound-rate" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 p-2.5" placeholder="e.g., 7" min="0" step="0.1">
+                    </div>
+                    <div class="flex flex-col">
+                        <label for="compound-years" class="text-gray-600 font-medium mb-1">Number of Years</label>
+                        <input type="number" id="compound-years" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 p-2.5" placeholder="e.g., 10" min="1">
+                    </div>
+                    <div class="flex flex-col">
+                        <label for="compound-contributions" class="text-gray-600 font-medium mb-1">Monthly Contribution ($)</label>
+                        <input type="number" id="compound-contributions" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 p-2.5" placeholder="e.g., 100" min="0">
+                    </div>
+                </div>
+                <button id="calculate-compound" class="mt-8 w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-4 rounded-lg shadow-md transition duration-300">
+                    Calculate
+                </button>
+                <div id="compound-result" class="mt-6 p-4 bg-indigo-50 text-indigo-800 rounded-lg shadow-inner">
+                    <p class="font-semibold text-lg">Future Value: <span id="future-value" class="font-bold">0</span></p>
+                    <p>Total Contributions: <span id="total-contributions">0</span></p>
+                    <p>Total Interest Earned: <span id="total-interest-compound">0</span></p>
+                </div>
+            </div>
+
+            <!-- Savings Goal Calculator -->
+            <div id="savings-calc" class="calculator-container bg-white p-6 md:p-8 rounded-2xl shadow-xl border-t-4 border-indigo-600 max-w-2xl mx-auto hidden">
+                <h3 class="text-2xl font-bold mb-6 text-gray-700">Savings Goal Calculator</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="flex flex-col">
+                        <label for="savings-goal" class="text-gray-600 font-medium mb-1">Savings Goal ($)</label>
+                        <input type="number" id="savings-goal" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 p-2.5" placeholder="e.g., 10000" min="0">
+                    </div>
+                    <div class="flex flex-col">
+                        <label for="savings-initial" class="text-gray-600 font-medium mb-1">Initial Deposit ($)</label>
+                        <input type="number" id="savings-initial" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 p-2.5" placeholder="e.g., 1000" min="0">
+                    </div>
+                    <div class="flex flex-col">
+                        <label for="savings-rate" class="text-gray-600 font-medium mb-1">Annual Interest Rate (%)</label>
+                        <input type="number" id="savings-rate" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 p-2.5" placeholder="e.g., 3" min="0" step="0.1">
+                    </div>
+                    <div class="flex flex-col">
+                        <label for="savings-months" class="text-gray-600 font-medium mb-1">Term (Months)</label>
+                        <input type="number" id="savings-months" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 p-2.5" placeholder="e.g., 60" min="1">
+                    </div>
+                </div>
+                <button id="calculate-savings" class="mt-8 w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-4 rounded-lg shadow-md transition duration-300">
+                    Calculate
+                </button>
+                <div id="savings-result" class="mt-6 p-4 bg-indigo-50 text-indigo-800 rounded-lg shadow-inner">
+                    <p class="font-semibold text-lg">Monthly Savings Required: <span id="monthly-savings" class="font-bold">0</span></p>
+                    <p>Total Saved: <span id="total-saved">0</span></p>
+                    <p>Total Interest Earned: <span id="total-interest-savings">0</span></p>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- About Us Content -->
+        <div id="about-content" class="container-content p-6 md:p-8 bg-white rounded-2xl shadow-xl max-w-4xl mx-auto">
+            <h2 class="text-3xl font-bold mb-6 text-gray-800">About Us</h2>
+            <p class="text-gray-700 mb-4">Welcome to Finance Hub, your go-to destination for simple and powerful financial tools. We believe that understanding your finances shouldn't be complicated. Our mission is to provide you with easy-to-use calculators to help you make informed decisions about your loans, investments, and savings goals.</p>
+            <p class="text-gray-700">Whether you're planning a major purchase, saving for retirement, or just want to get a clearer picture of your financial future, our tools are here to help. We are committed to providing a reliable and user-friendly experience.</p>
+        </div>
+
+        <!-- Contact Us Content -->
+        <div id="contact-content" class="container-content p-6 md:p-8 bg-white rounded-2xl shadow-xl max-w-4xl mx-auto">
+            <h2 class="text-3xl font-bold mb-6 text-gray-800">Contact Us</h2>
+            <p class="text-gray-700 mb-4">Have questions or feedback? We'd love to hear from you. Please reach out to us via the following methods.</p>
+            <div class="bg-gray-50 p-4 rounded-lg">
+                <p class="text-lg font-semibold text-gray-800">Email: <a href="mailto:contact@financehub.com" class="text-indigo-600 hover:underline">contact@financehub.com</a></p>
+                <p class="text-lg font-semibold text-gray-800 mt-2">Phone: <a href="tel:+1234567890" class="text-indigo-600 hover:underline">(123) 456-7890</a></p>
+            </div>
+        </div>
+
+        <!-- Disclaimer Content -->
+        <div id="disclaimer-content" class="container-content p-6 md:p-8 bg-white rounded-2xl shadow-xl max-w-4xl mx-auto">
+            <h2 class="text-3xl font-bold mb-6 text-gray-800">Disclaimer</h2>
+            <p class="text-gray-700 mb-4">The calculators and information on this website are provided for informational and educational purposes only. They should not be considered as financial advice. The results are based on the information you provide and are for illustrative purposes only. We do not guarantee the accuracy of the results and are not liable for any financial decisions made based on this information.</p>
+            <p class="text-gray-700">Please consult with a qualified financial professional for personalized advice tailored to your specific situation.</p>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white p-6 text-center mt-12">
+        <p>&copy; 2024 Finance Hub. All rights reserved.</p>
+        <p class="mt-2 text-sm text-gray-400">Disclaimer: The results provided by these calculators are for illustrative purposes only and should not be considered financial advice.</p>
+    </footer>
+
+    <script>
+        // Hamburger menu toggle for mobile
+        const menuToggle = document.getElementById('menu-toggle');
+        const navLinks = document.getElementById('nav-links');
+        menuToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('hidden');
+        });
+
+        // Function to switch between main content pages
+        const contentLinks = document.querySelectorAll('.container-link');
+        const contentContainers = document.querySelectorAll('.container-content');
+
+        contentLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = e.target.getAttribute('data-target');
+                contentContainers.forEach(container => {
+                    container.classList.remove('active');
+                });
+                document.getElementById(targetId).classList.add('active');
+                navLinks.classList.add('hidden'); // Hide mobile menu after selection
+            });
+        });
+
+        // Function to switch between calculators
+        const calculatorBtns = document.querySelectorAll('.calculator-btn');
+        const calculatorContainers = document.querySelectorAll('.calculator-container');
+
+        calculatorBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const targetId = e.target.getAttribute('data-calc');
+                calculatorContainers.forEach(container => {
+                    container.classList.add('hidden');
+                });
+                document.getElementById(`${targetId}-calc`).classList.remove('hidden');
+            });
+        });
+
+        // Loan Calculator Logic
+        document.getElementById('calculate-loan').addEventListener('click', () => {
+            const amount = parseFloat(document.getElementById('loan-amount').value);
+            const interest = parseFloat(document.getElementById('loan-interest').value) / 100 / 12;
+            const years = parseFloat(document.getElementById('loan-term').value);
+            const months = years * 12;
+
+            if (amount > 0 && interest >= 0 && years > 0) {
+                const monthlyPayment = (amount * interest) / (1 - Math.pow(1 + interest, -months));
+                const totalRepayment = monthlyPayment * months;
+                const totalInterest = totalRepayment - amount;
+                
+                document.getElementById('monthly-payment').textContent = `$${monthlyPayment.toFixed(2)}`;
+                document.getElementById('total-interest').textContent = `$${totalInterest.toFixed(2)}`;
+                document.getElementById('total-repayment').textContent = `$${totalRepayment.toFixed(2)}`;
+            } else {
+                document.getElementById('monthly-payment').textContent = 'Invalid Input';
+                document.getElementById('total-interest').textContent = 'Invalid Input';
+                document.getElementById('total-repayment').textContent = 'Invalid Input';
+            }
+        });
+
+        // Compound Interest Calculator Logic
+        document.getElementById('calculate-compound').addEventListener('click', () => {
+            const principal = parseFloat(document.getElementById('compound-principal').value);
+            const rate = parseFloat(document.getElementById('compound-rate').value) / 100;
+            const years = parseFloat(document.getElementById('compound-years').value);
+            const monthlyContribution = parseFloat(document.getElementById('compound-contributions').value);
+            const months = years * 12;
+            const monthlyRate = rate / 12;
+
+            if (principal >= 0 && rate >= 0 && years > 0 && monthlyContribution >= 0) {
+                let futureValue = principal;
+                let totalContributions = 0;
+
+                for (let i = 0; i < months; i++) {
+                    futureValue = (futureValue + monthlyContribution) * (1 + monthlyRate);
+                    totalContributions += monthlyContribution;
+                }
+
+                const totalInterest = futureValue - principal - totalContributions;
+
+                document.getElementById('future-value').textContent = `$${futureValue.toFixed(2)}`;
+                document.getElementById('total-contributions').textContent = `$${totalContributions.toFixed(2)}`;
+                document.getElementById('total-interest-compound').textContent = `$${totalInterest.toFixed(2)}`;
+            } else {
+                document.getElementById('future-value').textContent = 'Invalid Input';
+                document.getElementById('total-contributions').textContent = 'Invalid Input';
+                document.getElementById('total-interest-compound').textContent = 'Invalid Input';
+            }
+        });
+
+        // Savings Goal Calculator Logic
+        document.getElementById('calculate-savings').addEventListener('click', () => {
+            const goal = parseFloat(document.getElementById('savings-goal').value);
+            const initial = parseFloat(document.getElementById('savings-initial').value);
+            const rate = parseFloat(document.getElementById('savings-rate').value) / 100 / 12;
+            const months = parseFloat(document.getElementById('savings-months').value);
+
+            if (goal > 0 && initial >= 0 && rate >= 0 && months > 0) {
+                const futureValueInitial = initial * Math.pow(1 + rate, months);
+                const futureValueContributions = (goal - futureValueInitial) / ((Math.pow(1 + rate, months) - 1) / rate);
+                const totalContributions = futureValueContributions * months;
+                const totalSaved = initial + totalContributions;
+                const totalInterest = goal - totalSaved;
+
+                if (futureValueContributions < 0) {
+                    document.getElementById('monthly-savings').textContent = 'Goal already met!';
+                    document.getElementById('total-saved').textContent = 'Goal already met!';
+                    document.getElementById('total-interest-savings').textContent = 'Goal already met!';
+                } else {
+                    document.getElementById('monthly-savings').textContent = `$${futureValueContributions.toFixed(2)}`;
+                    document.getElementById('total-saved').textContent = `$${totalSaved.toFixed(2)}`;
+                    document.getElementById('total-interest-savings').textContent = `$${totalInterest.toFixed(2)}`;
+                }
+            } else {
+                document.getElementById('monthly-savings').textContent = 'Invalid Input';
+                document.getElementById('total-saved').textContent = 'Invalid Input';
+                document.getElementById('total-interest-savings').textContent = 'Invalid Input';
+            }
+        });
+    </script>
+</body>
+</html>
